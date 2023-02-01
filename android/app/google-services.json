@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "799938302930",
+    "project_id": "email-password-auth-e8170",
+    "storage_bucket": "email-password-auth-e8170.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799938302930:android:62e87d5f3bde9ef252ae0b",
+        "android_client_info": {
+          "package_name": "com.example.quamtum_it_solutions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799938302930-g304i15r74slf41jo5183l3e6pb9rs2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXo3gNv2YO7gKqrruCGZPvuHtrzUNxRqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799938302930-g304i15r74slf41jo5183l3e6pb9rs2o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "799938302930-44pur0nar82if0e28uko3hnbiok1k96n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.enailSignup"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
