@@ -2,9 +2,11 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quamtum_it_solutions/firebase-auth/firebase_login_gmail_password.dart';
-import 'package:quamtum_it_solutions/main_view/login.dart';
+
 import 'package:quamtum_it_solutions/main_view/sign_up.dart';
 import 'package:quamtum_it_solutions/show-messages/show_message.dart';
+
+import 'login_page.dart';
 class SelectLoginType extends StatefulWidget {
   const SelectLoginType({Key? key}) : super(key: key);
 

@@ -1,19 +1,41 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
+import 'package:quamtum_it_solutions/home.dart';
 import 'package:quamtum_it_solutions/http_response/http_response.dart';
 import 'package:quamtum_it_solutions/main_view/home.dart';
-import 'package:quamtum_it_solutions/main_view/select_auth_process.dart';
-import 'package:quamtum_it_solutions/home.dart';
+import 'package:quamtum_it_solutions/used_main_view/home.dart';
+import 'package:quamtum_it_solutions/used_main_view/login_page.dart';
 
 import 'firebase_options.dart';
 
-Future<void> main() async {
+const AndroidNotificationChannel channel= AndroidNotificationChannel(
+    "high_impt_channel",
+    "high important notificATION",importance: Importance.high,playSound: true);
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin=
+FlutterLocalNotificationsPlugin();
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('A big iuhfiu: ${message.messageId}');
+}
+ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true
   );
   await Hive.initFlutter();
   var box= await Hive.openBox('News');
@@ -46,7 +68,7 @@ class MyApp extends StatelessWidget {
           if(snapshot.hasData){
             return Home();
           }else{
-            return SelectLoginType();
+            return HomePage2();
           }
         },
       )
