@@ -1,5 +1,11 @@
+
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:passwordfield/passwordfield.dart';
 import 'package:quamtum_it_solutions/used_main_view/login_page.dart';
@@ -14,7 +20,10 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
-  late TextEditingController name=TextEditingController();
+  late TextEditingController userName=TextEditingController();
+  String localPath= 'hello';
+  String profileUrl='';
+  String profileRef='';
   late TextEditingController email=TextEditingController();
   late TextEditingController password=TextEditingController();
   late TextEditingController phoneNumber=TextEditingController();
@@ -42,13 +51,73 @@ class _SignUpState extends State<SignUp> {
                 height: 16,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width:MediaQuery.of(context).size.width*0.4,
+                            height: MediaQuery.of(context).size.width*0.4,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width*0.2),
+                              color: Colors.black,
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width*0.2),
+                                child: localPath=='hello'? Image.asset('assets/dummy.png',fit: BoxFit.cover):
+                            Image.file(File(localPath))),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            radius: 22,
+                            child: Center(
+                              child: IconButton(icon: Icon(Icons.add,size: 25,),onPressed: () async{
+                                final picker=ImagePicker();
+                                final image= await picker.pickImage(source: ImageSource.gallery);
+                                setState(() {
+                                  localPath=image!.path;
+                                });
+                                List<String> alphabets=[];
+                                for(int i=65; i<=90; i++){
+                                  alphabets.add(String.fromCharCode(i));
+                                }
+                                alphabets.shuffle();
+                                for(int i=0;i<8;i++){
+                                  profileRef+=alphabets[i];
+                                }
+                                final ref=FirebaseStorage.instance.ref().child(profileRef.toLowerCase());
+                                final imageFile= await ref.putFile(File(image!.path));
+                                final imageUrlPath= await imageFile.ref.getDownloadURL();
+                                setState(() {
+                                  profileUrl=imageUrlPath;
+                                });
+                                print(profileUrl);
+                              },),
+                            ),
+                          )
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Icon(Icons.person,color: Colors.blue,),
                   SizedBox(
                     width: MediaQuery.of(context).size.width*0.7,
                     child: TextField(
-                      controller: name,
+                      controller: userName,
                       decoration: InputDecoration(
                         hintText: 'John deo',
                       ),
@@ -148,7 +217,7 @@ class _SignUpState extends State<SignUp> {
                       height: 40,
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
                       child: ElevatedButton(onPressed: (){
-                        if(name.text.isEmpty){
+                        if(userName.text.isEmpty){
                           ShowMessage.displayMessage('Enter Name', context,Colors.red);
                         }
                         else if(email.text.isEmpty){
@@ -166,8 +235,8 @@ class _SignUpState extends State<SignUp> {
                         else if(!widget.checkBox){
                           ShowMessage.displayMessage('Accept Terms&Conditions', context,Colors.red);
                         }
-                        else if(name.text.isNotEmpty&&phoneNumber.text.isNotEmpty&&email.text.isNotEmpty&&password.text.isNotEmpty&&widget.checkBox){
-                          FirebaseAuthentication.SignUpWithGmail(email.text, password.text, context);
+                        else if(userName.text.isNotEmpty&&phoneNumber.text.isNotEmpty&&email.text.isNotEmpty&&password.text.isNotEmpty&&widget.checkBox){
+                          FirebaseAuthentication.SignUpWithGmail(email.text, password.text,userName.text, profileUrl,profileRef,context,);
                         }
                       },child: Text('Sign Up',style: TextStyle(
                           color: Colors.white,fontSize: 20

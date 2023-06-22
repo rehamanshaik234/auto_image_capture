@@ -70,7 +70,7 @@ class _LoginState extends State<Login> {
             children: [
               GestureDetector(
                 onTap: () async{
-                  UserCredential user= await FirebaseAuthentication.signInWithGoogle();
+                   await FirebaseAuthentication.signInWithGoogle(context);
                   setState(() {
 
                   });

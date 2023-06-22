@@ -37,7 +37,14 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
-
+/lib/firebase-auth
+/lib/http_response
+/lib/main_view
+/lib/medicine
+/lib/show-messages
+/lib/used_main_view
+/lib/user
+/lib/home.dart
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile

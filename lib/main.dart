@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
-import 'package:quamtum_it_solutions/home.dart';
+import 'package:quamtum_it_solutions/image_picker.dart';
 import 'package:quamtum_it_solutions/http_response/http_response.dart';
 import 'package:quamtum_it_solutions/main_view/home.dart';
-import 'package:quamtum_it_solutions/used_main_view/home.dart';
 import 'package:quamtum_it_solutions/used_main_view/login_page.dart';
 
 import 'firebase_options.dart';
@@ -39,6 +38,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   );
   await Hive.initFlutter();
   var box= await Hive.openBox('News');
+  var box2= await Hive.openBox('Authentication');
   runApp( MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => HttpResponse()),
@@ -47,9 +47,19 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   ),);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -59,19 +69,9 @@ class MyApp extends StatelessWidget {
       theme:  ThemeData(
         primarySwatch: Colors.grey,
         inputDecorationTheme: const InputDecorationTheme(
-
         ),
       ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context,snapshot){
-          if(snapshot.hasData){
-            return Home();
-          }else{
-            return HomePage2();
-          }
-        },
-      )
+      home:HomePage2()
     );
   }
 }

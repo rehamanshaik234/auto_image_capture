@@ -15,7 +15,9 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
    TextEditingController email=TextEditingController();
    TextEditingController password=TextEditingController();
-  @override
+   TextEditingController userName=TextEditingController();
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -50,6 +52,25 @@ class _LoginState extends State<Login> {
                       controller: email,
                       decoration: InputDecoration(
                         hintText: 'johndeo@gmail.com',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Icon(Icons.person,color: Colors.blue,),
+
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width*0.7,
+                    child: TextField(
+                      controller: userName,
+                      decoration: InputDecoration(
+                        hintText: 'username',
                       ),
                     ),
                   ),
@@ -112,7 +133,7 @@ class _LoginState extends State<Login> {
                         }else if(password.text.isEmpty){
                           ShowMessage.displayMessage('Enter Password', context,Colors.red);
                         }else if(email.text.isNotEmpty&&password.text.isNotEmpty){
-                          FirebaseAuthentication.SignInWithGmail(email.text, password.text, context);
+                          FirebaseAuthentication.SignInWithGmail(email.text, password.text,userName.text,context);
                         }
                       },child: Text('Sign In',style: TextStyle(
                         color: Colors.white,fontSize: 20
@@ -139,7 +160,7 @@ class _LoginState extends State<Login> {
                 children: [
                   InkWell(
                     onTap: () async{
-                      UserCredential user= await FirebaseAuthentication.signInWithGoogle();
+                      await FirebaseAuthentication.signInWithGoogle(context);
                       setState(() {
 
                       });

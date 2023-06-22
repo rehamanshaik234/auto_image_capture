@@ -112,7 +112,7 @@ class _SelectLoginTypeState extends State<SelectLoginType> {
               }else if(loginPassword.text.isEmpty){
                 ShowMessage.displayMessage('Enter Password', context,Colors.red);
               }else if(loginEmail.text.isNotEmpty&&loginPassword.text.isNotEmpty){
-                FirebaseAuthentication.SignInWithGmail(loginEmail.text, loginPassword.text, context);
+               // FirebaseAuthentication.SignInWithGmail(loginEmail.text, loginPassword.text, context);
               }
 
             }, child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 20),),
@@ -145,7 +145,7 @@ class _SelectLoginTypeState extends State<SelectLoginType> {
                 ShowMessage.displayMessage('Enter Password', context,Colors.red);
               }
               else if(name.text.isNotEmpty&&phoneNumber.text.isNotEmpty&&email.text.isNotEmpty&&password.text.isNotEmpty){
-               FirebaseAuthentication.SignUpWithGmail(email.text, password.text, context);
+               //FirebaseAuthentication.SignUpWithGmail(email.text, password.text, context);
               }
             }, child: Text('Register',style: TextStyle(color: Colors.white,fontSize: 20),),
 
